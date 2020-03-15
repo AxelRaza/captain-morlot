@@ -1,8 +1,6 @@
 package com.oc.rss.oc_rss
 
-import android.app.AlertDialog
 import android.support.v7.widget.RecyclerView
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +9,7 @@ import com.example.marinegame.R
 
 import java.util.Arrays
 
-class RulesAdapter : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
-
-    private val roles = Arrays.asList(
-       Pair.create("Le Matelot", "Le bon camarade qui obéit comme un chien"),
-        Pair.create("Le Pirate", "Aussi méchant que le capitaine Crochet"),
-        Pair.create("Le Moussaillon", "Le débutant de seconde zone qui va ruiner ta partie")
-    )
+class RulesAdapter(private val roles : List<Pair<String, String>>, private val monRoleListener: onRoleListener) : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
 
     override fun getItemCount(): Int {
         return roles.size
@@ -26,7 +18,7 @@ class RulesAdapter : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.rules_list_case, parent, false)
-        return MyViewHolder(view)
+        return MyViewHolder(view, monRoleListener)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -34,7 +26,7 @@ class RulesAdapter : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
         holder.display(pair)
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View, onRoleListener: onRoleListener) : RecyclerView.ViewHolder(itemView) {
 
         private val role: TextView
         private val description: TextView
@@ -47,10 +39,7 @@ class RulesAdapter : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
             description = itemView.findViewById(R.id.role_desc_textview) as TextView
 
             itemView.setOnClickListener {
-                AlertDialog.Builder(itemView.context)
-                    .setTitle(currentPair!!.first)
-                    .setMessage(currentPair!!.second)
-                    .show()
+                onRoleListener.onRoleClick(adapterPosition)
             }
         }
 
@@ -59,6 +48,10 @@ class RulesAdapter : RecyclerView.Adapter<RulesAdapter.MyViewHolder>() {
             role.text = pair.first
             description.text = pair.second
         }
+    }
+
+    interface onRoleListener {
+        fun onRoleClick(position: Int)
     }
 
 }
