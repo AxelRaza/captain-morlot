@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.view.View
 import com.example.marinegame.R
 import com.example.marinegame.RulesActivity
+import com.example.marinegame.play.GameActivity
 
 class HomeActivity : AppCompatActivity(), HomeContract.MvpView {
 
-    var mPresenter : HomePresenter ?= null
+    lateinit var mPresenter : HomePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView {
     }
 
     fun play(view : View) {
-
+        startActivity(Intent(this, GameActivity::class.java))
     }
 
     fun openRules(view : View) {
