@@ -1,4 +1,4 @@
-package com.example.marinegame.play
+package com.example.marinegame.model
 
 import com.google.gson.annotations.SerializedName
 
