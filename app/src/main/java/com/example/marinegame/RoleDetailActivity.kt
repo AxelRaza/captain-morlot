@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 
-class RoleDetail : AppCompatActivity() {
+class RoleDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

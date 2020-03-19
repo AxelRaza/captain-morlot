@@ -14,17 +14,20 @@ import java.util.*
 
 class RulesActivity : AppCompatActivity(), RulesContract.MvpView, RulesAdapter.onRoleListener {
 
-    var mPresenter : RulesContract.Presenter ?= null
-    var roles : List<Pair<String, String>> = Arrays.asList(
-    Pair("Matelot", "Le bon camarade qui obéit comme un chien"),
-    Pair("Pirate", "Aussi méchant que le capitaine Crochet"),
-    Pair("Moussaillon", "Le débutant de seconde zone qui va ruiner ta partie")
-    )
+    lateinit var mPresenter : RulesContract.Presenter
+    lateinit var roles : List<Pair<String, String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rules)
         mPresenter = RulesPresenter(this)
+
+        roles = Arrays.asList(
+            Pair("Matelot", "Le bon camarade qui obéit comme un chien"),
+            Pair("Pirate", "Aussi méchant que le capitaine Crochet"),
+            Pair("Moussaillon", "Le débutant de seconde zone qui va ruiner ta partie")
+        )
+
         initRecyclerView(roles)
     }
 
@@ -39,7 +42,7 @@ class RulesActivity : AppCompatActivity(), RulesContract.MvpView, RulesAdapter.o
     }
 
     override fun onRoleClick(position: Int) {
-        val intent = Intent(this, RoleDetail::class.java)
+        val intent = Intent(this, RoleDetailActivity::class.java)
         intent.putExtra("Role", roles[position].first)
         startActivity(intent)
     }

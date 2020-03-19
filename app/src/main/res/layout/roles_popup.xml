@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@android:color/holo_orange_dark">
+
+    <TextView
+            android:id="@+id/popup_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Nouveaux Rôles"
+            android:textSize="25dp"
+    />
+
+    <TextView
+            android:id="@+id/player_pirate_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Nom du joueur"
+            android:textSize="25dp"
+            android:layout_below="@id/popup_textview"
+            android:layout_marginTop="40dp"
+    />
+
+    <TextView
+            android:id="@+id/pirate_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Tu es le Pirate !"
+            android:textSize="22dp"
+            android:layout_below="@id/player_pirate_name_textview"
+            android:layout_margin="10dp"
+    />
+
+    <TextView
+            android:id="@+id/player_mous_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Nom du joueur"
+            android:textSize="25dp"
+            android:layout_below="@id/pirate_textview"
+            android:layout_marginTop="30dp"
+    />
+
+    <TextView
+            android:id="@+id/moussaillon_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Tu es le Moussaillon !"
+            android:textSize="22dp"
+            android:layout_below="@id/player_mous_name_textview"
+            android:layout_margin="10dp"
+    />
+
+    <Button
+            android:id="@+id/ok_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_below="@id/moussaillon_textview"
+            android:text="A l'abordage"
+            android:layout_marginTop="40dp"
+    />
+
+</RelativeLayout>
