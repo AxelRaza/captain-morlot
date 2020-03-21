@@ -1,49 +1,114 @@
 package com.example.marinegame
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import com.example.marinegame.rules.RulesContract
 import com.example.marinegame.rules.RulesPresenter
-import com.oc.rss.oc_rss.RulesAdapter
-import java.util.*
+import android.support.v4.view.ViewPager
+import com.example.marinegame.adapter.RulesSliderAdapter
+import android.text.Html
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 
 
-class RulesActivity : AppCompatActivity(), RulesContract.MvpView, RulesAdapter.onRoleListener {
+
+
+class RulesActivity : AppCompatActivity(), RulesContract.MvpView {
 
     lateinit var mPresenter : RulesContract.Presenter
-    lateinit var roles : List<Pair<String, String>>
+    lateinit var pointsLayout : LinearLayout
+    lateinit var points : Array<TextView?>
+    lateinit var btnPrec : Button
+    lateinit var btnSuiv : Button
+    var currentPage : Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rules)
         mPresenter = RulesPresenter(this)
 
-        roles = Arrays.asList(
-            Pair("Matelot", "Le bon camarade qui obéit comme un chien"),
-            Pair("Pirate", "Aussi méchant que le capitaine Crochet"),
-            Pair("Moussaillon", "Le débutant de seconde zone qui va ruiner ta partie")
-        )
+        val sliderInformationAdapter = RulesSliderAdapter(this)
+        val slideInformation = findViewById<ViewPager>(R.id.information_viewpager)
+        slideInformation.setAdapter(sliderInformationAdapter)
 
-        initRecyclerView(roles)
+        pointsLayout = findViewById(R.id.pointsLayout)
+        ajouterPoints(0)
+        slideInformation.addOnPageChangeListener(viewListener)
+
+        btnSuiv = findViewById(R.id.button_suivant)
+        btnSuiv.setOnClickListener {
+            if (currentPage === points.size - 1)
+                finish()
+            else
+                slideInformation.setCurrentItem(currentPage + 1)
+        }
+
+        btnPrec = findViewById(R.id.button_precedent)
+        btnPrec.setVisibility(View.INVISIBLE)
+        btnPrec.setOnClickListener {
+            slideInformation.setCurrentItem(currentPage - 1)
+        }
+
     }
 
     fun backToHome(view : View) {
         finish()
     }
 
-    private fun initRecyclerView(roles : List<Pair<String, String>>) {
-        val rv = findViewById<View>(R.id.roles_list) as RecyclerView
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = RulesAdapter(roles, this)
+    fun ajouterPoints(position: Int) {
+        points = arrayOfNulls(6)
+        pointsLayout.removeAllViews()
+        for (i in 0 until points.size) {
+            points[i] = TextView(this)
+            points[i]!!.text = (Html.fromHtml("&#8226;"))
+            points[i]!!.textSize = 35F
+            points[i]!!.setTextColor(resources.getColor(R.color.background_material_dark))
+            pointsLayout.addView(points[i])
+        }
+        if (points.size > 0)
+            points[position]!!.setTextColor(resources.getColor(R.color.colorPrimary))
     }
 
-    override fun onRoleClick(position: Int) {
-        val intent = Intent(this, RoleDetailActivity::class.java)
-        intent.putExtra("Role", roles[position].first)
-        startActivity(intent)
+    var viewListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
+        override fun onPageScrolled(i: Int, v: Float, i1: Int) {
+
+        }
+
+        override fun onPageSelected(i: Int) {
+            ajouterPoints(i)
+            currentPage = i
+
+            if (i == 0) {
+                btnSuiv.setEnabled(true)
+                btnPrec.setEnabled(false)
+                btnPrec.setVisibility(View.INVISIBLE)
+
+                btnSuiv.setText("Suiv")
+                btnPrec.setText("")
+            } else if (i == points.size - 1) {
+                btnSuiv.setEnabled(true)
+                btnPrec.setEnabled(true)
+                btnPrec.setVisibility(View.VISIBLE)
+
+                btnSuiv.setText("Terminer")
+                btnPrec.setText("Prec")
+            } else {
+                btnSuiv.setEnabled(true)
+                btnPrec.setEnabled(true)
+                btnPrec.setVisibility(View.VISIBLE)
+
+                btnSuiv.setText("Suiv")
+                btnPrec.setText("Prec")
+            }
+        }
+
+        override fun onPageScrollStateChanged(i: Int) {
+
+        }
     }
+
+
 }

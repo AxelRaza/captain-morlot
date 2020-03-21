@@ -16,13 +16,24 @@
             android:onClick="backToHome"
     />
 
+    <ImageButton
+            android:id="@+id/help_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:src="@drawable/ic_help"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:onClick="openHelp"
+    />
+
     <TextView
             android:id="@+id/random_word_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Appuyez pour commencer"
+            android:text="Ca arrive..."
             android:gravity="center"
             android:textSize="25dp"
     />
