@@ -1,4 +1,6 @@
 package com.example.marinegame.model
 
-class Role(val name: String, val description: String) {
+import java.io.Serializable
+
+class Role(var name: String, var description: String) : Serializable {
 }
