@@ -13,6 +13,9 @@ import com.example.marinegame.adapter.PlayersAdapter
 import com.example.marinegame.model.Player
 import com.example.marinegame.model.Role
 import com.example.marinegame.play.GameActivity
+import android.widget.Toast
+import android.content.Context
+
 
 class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.onPlayerListener {
 
@@ -33,6 +36,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
         playersRecyclerView.layoutManager = LinearLayoutManager(this)
         playersRecyclerView.adapter = PlayersAdapter(playersList, this)
 
+        loadRulesFirstTime()
 
     }
 
@@ -44,9 +48,6 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
     fun play(view : View) {
         if(playersList.size < 2) {
             Toast.makeText(this,"3 joueurs minimum", Toast.LENGTH_LONG).show()
-        }
-        else if(playersList.size > 15) {
-            Toast.makeText(this,"15 joueurs maximum", Toast.LENGTH_LONG).show()
         }
         else {
             val intent = Intent(this, GameActivity::class.java)
@@ -62,16 +63,32 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
     fun addPlayer(view : View){
 
         for(player in playersList) {
-            if(player.name.equals(playerField.text.toString())) {
+            if(player.name.toUpperCase().equals(playerField.text.toString().toUpperCase())) {
                 Toast.makeText(this, "Joueur déjà existant", Toast.LENGTH_LONG).show()
                 return;
             }
         }
 
-        if(!playerField.text.isEmpty()) {
+        if(playersList.size > 15) {
+            Toast.makeText(this,"15 joueurs maximum", Toast.LENGTH_LONG).show()
+        }
+
+        else if(!playerField.text.isEmpty()) {
             playersList.add(Player(playerField.text.toString(), Role("", "")))
             playersRecyclerView.adapter.notifyDataSetChanged()
             playerField.text.clear()
         }
+    }
+
+    fun loadRulesFirstTime() {
+        val isFirstRun = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+            .getBoolean("isFirstRun", true)
+
+        if (isFirstRun) {
+            startActivity(Intent(this, RulesActivity::class.java))
+        }
+
+        getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
+            .putBoolean("isFirstRun", false).commit()
     }
 }

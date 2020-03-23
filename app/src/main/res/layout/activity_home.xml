@@ -4,16 +4,21 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@android:color/black"
         tools:context=".home.HomeActivity">
 
     <TextView
             android:id="@+id/title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Marino"
-            android:textSize="25dp"
+            android:text="Captain Morlot"
+            android:textSize="35dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
     />
 
 
@@ -30,16 +35,19 @@
             android:lines="1"
             android:singleLine="true"
             android:hint="Nom du joueur..."
+            android:textColorHint="@android:color/darker_gray"
+            android:textColor="@android:color/white"
     />
 
     <ImageButton
             android:id="@+id/add_player_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
             android:layout_alignRight="@id/player_list"
             android:layout_alignBottom="@id/player_name_edittext"
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_add"
+            android:background="@android:color/transparent"
             android:onClick="addPlayer"
     />
 
@@ -55,20 +63,24 @@
 
     <Button
             android:id="@+id/play_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/player_list"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="10dp"
             android:text="Jouer"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/design_button"
             android:onClick="play"
+            android:fontFamily="@font/bloomer"
     />
 
     <ImageButton
             android:id="@+id/rules_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/play_button"
             android:layout_marginTop="10dp"
