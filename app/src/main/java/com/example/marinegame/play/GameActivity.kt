@@ -1,5 +1,8 @@
 package com.example.marinegame.play
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -16,14 +19,23 @@ import com.example.marinegame.endgame.EndGameActivity
 import com.example.marinegame.model.Player
 import kotlin.random.Random
 import android.os.Handler
+import android.util.Log
+import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.RelativeLayout
 
 
 class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
+    lateinit var view : RelativeLayout
     lateinit var randomWord : TextView
+    lateinit var playerFirstTurn : TextView
+    lateinit var currentPlayer : Player
     lateinit var presenter : GameContract.Presenter
     lateinit var roleDialog : Dialog
     lateinit var playersList : ArrayList<Player>
+    lateinit var backgrounds : IntArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +44,15 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         presenter = GamePresenter(this, GetWordIntractorImpl())
         presenter.requestDataFromServer()
         playersList = intent.extras["playersList"] as ArrayList<Player>
+        backgrounds = intArrayOf(R.drawable.blue_background, R.drawable.green_background, R.drawable.orange_background, R.drawable.pink_background, R.drawable.dark_blue_background)
+
+        view = findViewById(R.id.game_view)
+        view.setBackgroundResource(backgrounds[Random.nextInt(0,backgrounds.size)])
+
+        currentPlayer = playersList[Random.nextInt(0, playersList.size)]
+        playerFirstTurn = findViewById(R.id.player_turn_textview)
+        playerFirstTurn.text = "Après " + currentPlayer.name + ", dites un mot en relation avec celui du joueur précédent etc..."
+
         showRoleDialog()
     }
 
@@ -43,6 +64,31 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         startActivity(Intent(this,RulesActivity::class.java))
     }
 
+    fun reloadWord(mView : View) {
+        presenter.onRefreshClick()
+        var wordAnim = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
+        randomWord.startAnimation(wordAnim)
+
+        var viewAnimOut = AnimationUtils.loadAnimation(this, R.anim.fade_out)
+        var viewAnimIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        view.startAnimation(viewAnimOut)
+        viewAnimOut.setAnimationListener(object : Animation.AnimationListener {
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                view.setBackgroundResource(backgrounds[Random.nextInt(0,backgrounds.size)])
+                view.startAnimation(viewAnimIn)
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        })
+
+    }
+
     fun onClickScreen(view: View) {
         val gameIntent = Intent(this, EndGameActivity::class.java)
         gameIntent.putExtra("playersList", playersList)
@@ -52,6 +98,7 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
     fun showRoleDialog() {
         roleDialog = Dialog(this)
+        roleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         roleDialog.setContentView(R.layout.roles_popup)
 
         val okButton = roleDialog.findViewById<Button>(R.id.ok_button)
@@ -61,34 +108,20 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         val moussaillonDescText = roleDialog.findViewById<TextView>(R.id.moussaillon_textview)
 
         var pirateIndex = 0
-        var moussaillonIndex = 0
+        var moussaillonIndex = 1
 
         for(player in playersList) {
             if(player.role.name == "Moussaillon")
                 player.role.name = ""
         }
 
-        do {
-            pirateIndex = Random.nextInt(0, playersList.size)
-            moussaillonIndex = Random.nextInt(0, playersList.size)
-        }
-        while (pirateIndex == moussaillonIndex)
+        playersList.shuffle()
 
-        if(playersList.size < 3 && isPirate()) {
-            playersList[pirateIndex].role.name = "Pirate"
-            playersList[moussaillonIndex].role.name = ""
-        }
-        else if(playersList.size > 2 && isPirate()) {
+        if(playersList.size > 2)
             playersList[moussaillonIndex].role.name = "Moussaillon"
-        }
-        else if(playersList.size < 3 && !isPirate()) {
+
+        if(!isPirate())
             playersList[pirateIndex].role.name = "Pirate"
-            playersList[moussaillonIndex].role.name = ""
-        }
-        else if(playersList.size > 2 && !isPirate()){
-            playersList[pirateIndex].role.name = "Pirate"
-            playersList[moussaillonIndex].role.name = "Moussaillon"
-        }
 
         for(player : Player in playersList) {
             if(player.role.name.equals("Matelot") || player.role.name.equals(""))
@@ -107,7 +140,7 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
             moussaillonDescText.visibility = View.GONE
         }
 
-        playerTurn.text = playersList[Random.nextInt(0, playersList.size)].name + " commence en premier"
+        playerTurn.text = currentPlayer.name + " commence en premier"
 
         okButton.setOnClickListener {
             roleDialog.dismiss()
