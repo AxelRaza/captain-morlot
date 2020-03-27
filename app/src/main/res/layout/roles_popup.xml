@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom"
         android:gravity="center"
-        android:background="@android:color/holo_orange_dark">
+        android:background="@drawable/design_popup">
 
     <TextView
             android:id="@+id/popup_textview"
-            android:layout_width="200dp"
+            android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="Rôles"
-            android:textSize="25dp"
+            android:textColor="@android:color/black"
+            android:textSize="22dp"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
@@ -23,20 +25,25 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Nom du joueur"
-            android:textSize="25dp"
+            android:textSize="22dp"
             android:layout_below="@id/popup_textview"
             android:layout_marginTop="40dp"
+            android:textColor="@color/orange"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
             android:id="@+id/pirate_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Tu es le Pirate !"
-            android:textSize="22dp"
+            android:gravity="center"
+            android:text="Tu es le Pirate ! Tu ne peux dire que le contraire ou la suite d'un mot"
+            android:textSize="20dp"
             android:layout_below="@id/player_pirate_name_textview"
             android:layout_margin="10dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
@@ -45,31 +52,40 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Nom du joueur"
-            android:textSize="25dp"
+            android:textSize="22dp"
             android:layout_below="@id/pirate_textview"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/blue"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
             android:id="@+id/moussaillon_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Tu es le Moussaillon !"
-            android:textSize="22dp"
-            android:layout_below="@id/player_mous_name_textview"
-            android:layout_margin="10dp"
-    />
-
-    <Button
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:layout_below="@id/moussaillon_textview"
-            android:text="A l'abordage"
-            android:layout_marginTop="40dp"
+            android:text="Tu es le Moussaillon ! Tu peux dire tout ce qui est en relation avec un mot et tu dois faire mimer les autres"
+            android:textSize="20dp"
+            android:layout_below="@id/player_mous_name_textview"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/bloomer"
     />
+
+    <TextView
+            android:id="@+id/player_matelot_name_textview"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Les Matelots décrivent un mot"
+            android:textSize="22dp"
+            android:layout_below="@id/moussaillon_textview"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/green"
+            android:fontFamily="@font/bloomer"
+    />
+
 
 </RelativeLayout>

@@ -19,6 +19,7 @@ import com.example.marinegame.endgame.EndGameActivity
 import com.example.marinegame.model.Player
 import kotlin.random.Random
 import android.os.Handler
+import android.support.design.widget.BottomSheetDialog
 import android.util.Log
 import android.view.Window
 import android.view.animation.Animation
@@ -93,15 +94,14 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         val gameIntent = Intent(this, EndGameActivity::class.java)
         gameIntent.putExtra("playersList", playersList)
         startActivity(gameIntent)
+        overridePendingTransition(R.anim.exit_2,R.anim.entry_2)
         finish()
     }
 
     fun showRoleDialog() {
-        roleDialog = Dialog(this)
-        roleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        roleDialog = BottomSheetDialog(this, R.style.SheetDialog)
         roleDialog.setContentView(R.layout.roles_popup)
 
-        val okButton = roleDialog.findViewById<Button>(R.id.ok_button)
         val playerTurn = roleDialog.findViewById<TextView>(R.id.popup_textview)
         val piratePlayerText = roleDialog.findViewById<TextView>(R.id.player_pirate_name_textview)
         val moussaillonPlayerText = roleDialog.findViewById<TextView>(R.id.player_mous_name_textview)
@@ -142,12 +142,8 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
         playerTurn.text = currentPlayer.name + " commence en premier"
 
-        okButton.setOnClickListener {
-            roleDialog.dismiss()
-        }
-        roleDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val run = Runnable { roleDialog.show() }
-        Handler().postDelayed(run, 500)
+        Handler().postDelayed(run, 300)
     }
 
     override fun onResponseFailure(throwable: Throwable) {
