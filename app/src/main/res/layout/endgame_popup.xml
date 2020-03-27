@@ -2,10 +2,10 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@android:color/holo_orange_dark">
+        android:background="@drawable/design_popup_2">
 
     <TextView
             android:id="@+id/popup_textview"
@@ -14,17 +14,22 @@
             android:layout_centerHorizontal="true"
             android:text="Fin de l'aventure !"
             android:textSize="25dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
             android:id="@+id/player_winner_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_centerHorizontal="true"
             android:text="Nom du joueur"
             android:textSize="25dp"
             android:layout_below="@id/popup_textview"
             android:layout_marginTop="40dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
     />
 
     <TextView
@@ -36,21 +41,23 @@
             android:textSize="22dp"
             android:layout_below="@id/player_winner_textview"
             android:layout_margin="10dp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
     />
-
-
-
-
 
     <Button
             android:id="@+id/end_button"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_below="@id/winner_desc_textview"
             android:text="Retour à l'accueil"
+            android:textSize="20dp"
             android:layout_marginTop="40dp"
+            android:background="@drawable/design_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
     />
 
 </RelativeLayout>

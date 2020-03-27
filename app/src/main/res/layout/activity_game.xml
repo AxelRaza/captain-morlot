@@ -2,25 +2,28 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/dark_blue_background"
         android:onClick="onClickScreen"
         tools:context=".play.GameActivity">
 
     <ImageButton
             android:id="@+id/back_game_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_margin="20dp"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/ic_cancel"
+            android:background="@android:color/transparent"
             android:onClick="backToHome"
     />
 
     <ImageButton
             android:id="@+id/help_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
             android:src="@drawable/ic_help"
             android:background="@android:color/transparent"
             android:layout_alignParentRight="true"
@@ -28,14 +31,41 @@
     />
 
     <TextView
+            android:id="@+id/player_turn_textview"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Après joueur, dites un mot en relation avec celui du joueur précédent etc..."
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
+            android:gravity="center"
+            android:textSize="18dp"
+    />
+
+    <TextView
             android:id="@+id/random_word_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="Ca arrive..."
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
             android:gravity="center"
-            android:textSize="25dp"
+            android:textSize="35dp"
+    />
+
+    <ImageButton
+            android:id="@+id/reload_button"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_reload"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="reloadWord"
     />
 
 </RelativeLayout>
