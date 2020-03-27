@@ -4,21 +4,24 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         tools:context=".RulesActivity">
 
     <ImageButton
             android:id="@+id/return_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_cancel"
             android:layout_margin="30dp"
+            android:background="@android:color/transparent"
             android:onClick="backToHome"
     />
 
     <android.support.v4.view.ViewPager
             android:id="@+id/information_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+    >
 
     </android.support.v4.view.ViewPager>
 
@@ -39,7 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Prec"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
             android:background="@android:color/transparent"
             android:layout_alignParentBottom="true"/>
 
@@ -48,7 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Suiv"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
             android:background="@android:color/transparent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"/>
