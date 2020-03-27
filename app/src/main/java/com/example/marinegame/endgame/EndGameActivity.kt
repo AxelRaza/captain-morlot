@@ -12,7 +12,10 @@ import com.example.marinegame.R
 import com.example.marinegame.model.Player
 import com.example.marinegame.play.GameActivity
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.View
+import android.view.Window
+import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlin.random.Random
 
@@ -20,7 +23,7 @@ import kotlin.random.Random
 class EndGameActivity : AppCompatActivity() {
 
     lateinit var playersList : ArrayList<Player>
-    lateinit var buttons : ArrayList<Button>
+    lateinit var playerCases : ArrayList<View>
     lateinit var grid : GridLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,55 +32,65 @@ class EndGameActivity : AppCompatActivity() {
 
         grid = findViewById(R.id.grid)
         playersList = intent.extras["playersList"] as ArrayList<Player>
-        buttons = ArrayList()
+        playerCases = ArrayList()
 
         for(i in 0..playersList.size-1) {
-            buttons.add(Button(this))
-            val params = GridLayout.LayoutParams()
-            params.setMargins(30,30,30,30)
-            params.height = 120
-            params.width = 120
-            buttons[i].id = i
-            buttons[i].text = playersList[i].name.toUpperCase().subSequence(0,1)
-            buttons[i].textSize = 50F
-            buttons[i].setBackgroundColor(resources.getColor(R.color.colorPrimary))
-            buttons[i].layoutParams = params
+            val image = View.inflate(this, R.layout.player_end_game_case, null)
+            val playerImage = image.findViewById<TextView>(R.id.player_image_textview)
+            val playerName = image.findViewById<TextView>(R.id.player_name_image)
+            playerCases.add(image)
 
-            buttons[i].setOnClickListener {
-               showConfirmDialog(playersList[i],buttons[i],it)
+            playerImage.text = playersList[i].name.subSequence(0,1)
+            playerName.text = playersList[i].name
+
+            if(playersList[i].role.name.equals("Matelot")) {
+                playerImage.setBackgroundResource(R.drawable.matelot_background)
+            }
+            else if(playersList[i].role.name.equals("Pirate")) {
+                playerImage.setBackgroundResource(R.drawable.pirate_background)
+            }
+            else if(playersList[i].role.name.equals("Moussaillon")) {
+                playerImage.setBackgroundResource(R.drawable.moussaillon_background)
             }
 
-            grid.addView(buttons[i],i)
+            image.setOnClickListener {
+                showConfirmDialog(playersList[i],playerCases[i],it)
+            }
+
+           grid.addView(image)
+
+
         }
 
     }
 
-    fun showConfirmDialog(player : Player, button : Button, view : View) {
+    fun showConfirmDialog(player : Player, case : View, view : View) {
         val builder = AlertDialog.Builder(this)
         builder.setCancelable(true)
         builder.setTitle(player.name + " (" + player.role.name + ")")
         builder.setMessage("Est-ce votre dernier mot ?")
         builder.setPositiveButton("Oui") {
-                    dialog, which ->
-                if(button.id == view.id) {
-                    if(playersList.size > 2) {
-                        playersList.removeAt(button.id)
-                        val gameIntent = Intent(this, GameActivity::class.java)
-                        gameIntent.putExtra("playersList", playersList)
-                        startActivity(gameIntent)
-                        finish()
-                    }
-                    else if(playersList.size == 2) {
-                        playersList.removeAt(button.id)
-                        showEndDialog(playersList.first())
-                    }
-
+                dialog, which ->
+            if(case.id == view.id) {
+                if(playersList.size > 2) {
+                    playersList.remove(player)
+                    val gameIntent = Intent(this, GameActivity::class.java)
+                    gameIntent.putExtra("playersList", playersList)
+                    startActivity(gameIntent)
+                    overridePendingTransition(R.anim.exit,R.anim.entry)
+                    finish()
+                }
+                else if(playersList.size == 2) {
+                    playersList.remove(player)
+                    showEndDialog(playersList.first())
                 }
 
             }
+
+        }
         builder.setNegativeButton("Non") {
                 dialog, which ->
-                dialog.cancel()
+            dialog.cancel()
         }
 
         val dialog = builder.create()
@@ -86,12 +99,19 @@ class EndGameActivity : AppCompatActivity() {
 
     fun showEndDialog(player : Player) {
         val roleDialog = Dialog(this)
+        roleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         roleDialog.setContentView(R.layout.endgame_popup)
 
         val playerWin = roleDialog.findViewById<TextView>(R.id.player_winner_textview)
         val endButton = roleDialog.findViewById<Button>(R.id.end_button)
 
         playerWin.text = player.name + " le " + player.role.name
+
+        when(player.role.name) {
+            "Matelot" -> playerWin.setTextColor(resources.getColor(R.color.green))
+            "Pirate" -> playerWin.setTextColor(resources.getColor(R.color.orange))
+            "Moussaillon" -> playerWin.setTextColor(resources.getColor(R.color.blue))
+        }
 
         endButton.setOnClickListener {
             finish()

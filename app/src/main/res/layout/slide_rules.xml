@@ -2,7 +2,9 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+>
 
     <ImageView
             android:id="@+id/logo_place"
@@ -14,7 +16,7 @@
 
     <TextView
             android:id="@+id/titre_infoRecherche"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
@@ -22,8 +24,9 @@
             android:layout_below="@id/logo_place"
             android:text="Trouvez votre activité facilement"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/bloomer"
+            android:textSize="25sp"/>
 
 
     <TextView
@@ -33,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:text="Rechercher une activité à partir d'un type et d'un lieu donné"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:gravity="center"
             android:layout_below="@id/titre_infoRecherche"
             android:layout_marginTop="50dp"/>

@@ -24,7 +24,6 @@ class RulesActivity : AppCompatActivity(), RulesContract.MvpView {
     lateinit var btnSuiv : Button
     var currentPage : Int = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rules)
@@ -65,11 +64,11 @@ class RulesActivity : AppCompatActivity(), RulesContract.MvpView {
             points[i] = TextView(this)
             points[i]!!.text = (Html.fromHtml("&#8226;"))
             points[i]!!.textSize = 35F
-            points[i]!!.setTextColor(resources.getColor(R.color.background_material_dark))
+            points[i]!!.setTextColor(resources.getColor(R.color.white))
             pointsLayout.addView(points[i])
         }
         if (points.size > 0)
-            points[position]!!.setTextColor(resources.getColor(R.color.colorPrimary))
+            points[position]!!.setTextColor(resources.getColor(R.color.blue))
     }
 
     var viewListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
