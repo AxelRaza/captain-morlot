@@ -29,7 +29,7 @@ class RulesSliderAdapter(val context : Context) : PagerAdapter() {
         "Tous les Matelots doivent dire un mot qui décrit le mot donné. \n\nPar exemple, si le mot est guitare, alors il peut dire : corde, instrument, acoustique ou encore manche",
         "Le Pirate doit dire un mot qui est soit une suite, soit le contraire ou qui va de pair avec le mot donné. \n\nPar exemple, si le mot est guitare, alors il peut dire acoustique ou électrique. \n\nSi le mot est Youtube, alors il peut dire Dailymotion ou heure (pour former youtuber).",
         "Le Moussaillon peut décrire, dire une suite, dire le contraire ou dire un mot qui va de pair avec celui donné. \n\nDe plus, lorsqu'il dira son mot, il devra désigner quelqu'un du doigt et celui-ci devra mimer son mot",
-        "Lorsque ce sera son tour, le joueur devra dire ou mimer son mot dans les 3 secondes, sinon il mourra.\n\nSi le Moussaillon oublie de désigner quelqu'un du doigt, il mourra également.\n\n A chaque mort, le moussailon change et le pirate ne change que si ce dernier meurt."
+        "Lorsque ce sera son tour, le joueur devra dire ou mimer son mot dans les 3 secondes, sinon il mourra.\n\nSi le Moussaillon oublie de désigner quelqu'un du doigt, il mourra également.\n\n A chaque mort, le moussailon et le pirate changent."
     )
 
     override fun getCount(): Int {

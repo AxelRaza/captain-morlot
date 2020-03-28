@@ -20,6 +20,7 @@ import com.example.marinegame.model.Player
 import kotlin.random.Random
 import android.os.Handler
 import android.support.design.widget.BottomSheetDialog
+import android.text.Html
 import android.util.Log
 import android.view.Window
 import android.view.animation.Animation
@@ -104,8 +105,11 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
         val playerTurn = roleDialog.findViewById<TextView>(R.id.popup_textview)
         val piratePlayerText = roleDialog.findViewById<TextView>(R.id.player_pirate_name_textview)
+        val piratePlayerDesc = roleDialog.findViewById<TextView>(R.id.pirate_textview)
+        val matelotPlayerText = roleDialog.findViewById<TextView>(R.id.player_matelot_name_textview)
         val moussaillonPlayerText = roleDialog.findViewById<TextView>(R.id.player_mous_name_textview)
         val moussaillonDescText = roleDialog.findViewById<TextView>(R.id.moussaillon_textview)
+        val okButton = roleDialog.findViewById<Button>(R.id.ok_button)
 
         var pirateIndex = 0
         var moussaillonIndex = 1
@@ -113,34 +117,41 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         for(player in playersList) {
             if(player.role.name == "Moussaillon")
                 player.role.name = ""
+            if(player.role.name == "Pirate")
+                player.role.name = ""
         }
 
         playersList.shuffle()
 
-        if(playersList.size > 2)
+        if(playersList.size > 2) {
             playersList[moussaillonIndex].role.name = "Moussaillon"
-
-        if(!isPirate())
             playersList[pirateIndex].role.name = "Pirate"
-
-        for(player : Player in playersList) {
-            if(player.role.name.equals("Matelot") || player.role.name.equals(""))
-                player.role.name = "Matelot"
         }
 
+
         for(player in playersList) {
-            if(player.role.name == "Pirate")
+            if(player.role.name.equals("Matelot") || player.role.name.equals(""))
+                player.role.name = "Matelot"
+            else if(player.role.name == "Pirate")
                 piratePlayerText.text = player.name
             else if(player.role.name == "Moussaillon")
                 moussaillonPlayerText.text = player.name
         }
 
-        if(!isMoussaillon()) {
+        if(!isMoussaillon() && !isPirate()) {
             moussaillonPlayerText.visibility = View.GONE
             moussaillonDescText.visibility = View.GONE
+            piratePlayerText.visibility = View.GONE
+            piratePlayerDesc.visibility = View.GONE
+            matelotPlayerText.setTextColor(resources.getColor(R.color.black))
+            matelotPlayerText.text = Html.fromHtml("Duel entre <font color=#96e6a1>" + playersList[0].name + "</font> et <font color=#96e6a1>" + playersList[1].name + "</font> ! Vous êtes matelots et vous ne pouvez que décrire un mot")
         }
 
         playerTurn.text = currentPlayer.name + " commence en premier"
+
+        okButton.setOnClickListener {
+            roleDialog.dismiss()
+        }
 
         val run = Runnable { roleDialog.show() }
         Handler().postDelayed(run, 300)
