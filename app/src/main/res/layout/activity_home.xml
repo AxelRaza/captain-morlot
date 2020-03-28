@@ -3,11 +3,20 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:background="@drawable/background"
         tools:context=".home.HomeActivity">
+
+
+    <ImageView
+            android:id="@+id/logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo"
+    />
 
     <TextView
             android:id="@+id/title_textview"
@@ -16,12 +25,10 @@
             android:text="Captain Morlot"
             android:textSize="35dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
             android:textColor="@android:color/white"
             android:fontFamily="@font/bloomer"
+            android:layout_below="@id/logo"
     />
-
-
 
     <EditText
             android:id="@+id/player_name_edittext"
@@ -67,7 +74,7 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/player_list"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
             android:text="Jouer"
             android:textSize="20dp"
@@ -81,10 +88,8 @@
             android:id="@+id/rules_button"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/play_button"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
             android:src="@drawable/ic_help"
             android:background="@android:color/transparent"
             android:text="Jouer"

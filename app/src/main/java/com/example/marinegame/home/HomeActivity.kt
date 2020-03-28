@@ -53,11 +53,13 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
             val intent = Intent(this, GameActivity::class.java)
             intent.putExtra("playersList", playersList)
             startActivity(intent)
+            overridePendingTransition(R.anim.exit_2, R.anim.entry_2)
         }
     }
 
     fun openRules(view : View) {
         startActivity(Intent(this, RulesActivity::class.java))
+        overridePendingTransition(R.anim.exit, R.anim.entry)
     }
 
     fun addPlayer(view : View){
@@ -69,8 +71,8 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
             }
         }
 
-        if(playersList.size > 15) {
-            Toast.makeText(this,"15 joueurs maximum", Toast.LENGTH_LONG).show()
+        if(playersList.size > 18) {
+            Toast.makeText(this,"18 joueurs maximum", Toast.LENGTH_LONG).show()
         }
 
         else if(!playerField.text.isEmpty()) {
