@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/design_popup_2">
+        android:background="@drawable/design_popup">
 
     <TextView
             android:id="@+id/popup_textview"
@@ -14,7 +14,7 @@
             android:layout_centerHorizontal="true"
             android:text="Fin de l'aventure !"
             android:textSize="25dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/bloomer"
     />
 
@@ -28,7 +28,7 @@
             android:textSize="25dp"
             android:layout_below="@id/popup_textview"
             android:layout_marginTop="40dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/bloomer"
     />
 
@@ -41,18 +41,18 @@
             android:textSize="22dp"
             android:layout_below="@id/player_winner_textview"
             android:layout_margin="10dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/bloomer"
     />
 
     <Button
             android:id="@+id/end_button"
-            android:layout_width="175dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_below="@id/winner_desc_textview"
-            android:text="Retour à l'accueil"
+            android:text="Accueil"
             android:textSize="20dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/design_button"

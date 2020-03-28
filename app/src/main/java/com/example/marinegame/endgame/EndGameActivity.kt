@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.widget.Button
 import android.widget.GridLayout
 import com.example.marinegame.R
@@ -25,6 +26,7 @@ class EndGameActivity : AppCompatActivity() {
     lateinit var playersList : ArrayList<Player>
     lateinit var playerCases : ArrayList<View>
     lateinit var grid : GridLayout
+    lateinit var endDialog : BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,14 +100,13 @@ class EndGameActivity : AppCompatActivity() {
     }
 
     fun showEndDialog(player : Player) {
-        val roleDialog = Dialog(this)
-        roleDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        roleDialog.setContentView(R.layout.endgame_popup)
+        endDialog = BottomSheetDialog(this, R.style.SheetDialog)
+        endDialog.setContentView(R.layout.endgame_popup)
 
-        val playerWin = roleDialog.findViewById<TextView>(R.id.player_winner_textview)
-        val endButton = roleDialog.findViewById<Button>(R.id.end_button)
+        val playerWin = endDialog.findViewById<TextView>(R.id.player_winner_textview)
+        val endButton = endDialog.findViewById<Button>(R.id.end_button)
 
-        playerWin.text = player.name + " le " + player.role.name
+        playerWin!!.text = player.name + " le " + player.role.name
 
         when(player.role.name) {
             "Matelot" -> playerWin.setTextColor(resources.getColor(R.color.green))
@@ -113,11 +114,14 @@ class EndGameActivity : AppCompatActivity() {
             "Moussaillon" -> playerWin.setTextColor(resources.getColor(R.color.blue))
         }
 
-        endButton.setOnClickListener {
+        endButton!!.setOnClickListener {
             finish()
         }
 
-        roleDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        roleDialog.show()
+        endDialog.show()
+
+        endDialog.setOnDismissListener {
+            finish()
+        }
     }
 }
