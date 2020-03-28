@@ -10,11 +10,10 @@ import android.widget.*
 import com.example.marinegame.R
 import com.example.marinegame.RulesActivity
 import com.example.marinegame.adapter.PlayersAdapter
-import com.example.marinegame.model.Player
-import com.example.marinegame.model.Role
 import com.example.marinegame.play.GameActivity
 import android.widget.Toast
-import android.content.Context
+import com.example.marinegame.model.Game
+import com.example.marinegame.model.SharedPreferenciesManager
 
 
 class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.onPlayerListener {
@@ -22,36 +21,31 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
     lateinit var mPresenter : HomePresenter
     lateinit var playersRecyclerView : RecyclerView
     lateinit var playerField : EditText
-    lateinit var playersList : ArrayList<Player>
+    val game : Game = Game.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        mPresenter = HomePresenter(this)
-
+        mPresenter = HomePresenter(this, game)
         playerField = findViewById(R.id.player_name_edittext)
         playersRecyclerView = findViewById(R.id.player_list)
-        playersList = ArrayList()
 
         playersRecyclerView.layoutManager = LinearLayoutManager(this)
-        playersRecyclerView.adapter = PlayersAdapter(playersList, this)
-
+        playersRecyclerView.adapter = PlayersAdapter(game.playersList(), this)
         loadRulesFirstTime()
 
     }
 
     override fun onPlayerClick(position: Int) {
-        playersList.removeAt(position)
-        playersRecyclerView.adapter.notifyDataSetChanged()
+        mPresenter.removePlayerAt(position)
     }
 
     fun play(view : View) {
-        if(playersList.size < 2) {
-            Toast.makeText(this,"3 joueurs minimum", Toast.LENGTH_LONG).show()
-        }
+        if(game.playersList().size < Game.NB_MIN_PLAYERS)
+            Toast.makeText(this,Game.NB_MIN_PLAYERS.toString() + " joueurs minimum", Toast.LENGTH_LONG).show()
         else {
             val intent = Intent(this, GameActivity::class.java)
-            intent.putExtra("playersList", playersList)
+            intent.putExtra(Game.GAME_DATA, game)
             startActivity(intent)
             overridePendingTransition(R.anim.exit_2, R.anim.entry_2)
         }
@@ -64,33 +58,32 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
 
     fun addPlayer(view : View){
 
-        for(player in playersList) {
-            if(player.name.toUpperCase().equals(playerField.text.toString().toUpperCase())) {
-                Toast.makeText(this, "Joueur déjà existant", Toast.LENGTH_LONG).show()
-                return;
-            }
-        }
+        if(game.exist(playerField.text.toString()))
+            Toast.makeText(this, "Joueur déjà existant", Toast.LENGTH_LONG).show()
 
-        if(playersList.size > 18) {
-            Toast.makeText(this,"18 joueurs maximum", Toast.LENGTH_LONG).show()
-        }
+        if(game.playersList().size > Game.NB_MAX_PLAYERS)
+            Toast.makeText(this,Game.NB_MAX_PLAYERS.toString() + " joueurs maximum", Toast.LENGTH_LONG).show()
 
         else if(!playerField.text.isEmpty()) {
-            playersList.add(Player(playerField.text.toString(), Role("", "")))
-            playersRecyclerView.adapter.notifyDataSetChanged()
+            mPresenter.addPlayer(playerField.text.toString(), "")
             playerField.text.clear()
         }
     }
 
     fun loadRulesFirstTime() {
-        val isFirstRun = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
-            .getBoolean("isFirstRun", true)
+        /*val isFirstRun = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+            .getBoolean("isFirstRun", true)*/
 
-        if (isFirstRun) {
+        if (SharedPreferenciesManager.isFirstRunApp(this)) {
             startActivity(Intent(this, RulesActivity::class.java))
         }
 
-        getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
-            .putBoolean("isFirstRun", false).commit()
+        /*getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
+            .putBoolean("isFirstRun", false).commit()*/
+        SharedPreferenciesManager.setFirstRunAppToFalse(this)
+    }
+
+    override fun updatePlayersList() {
+        playersRecyclerView.adapter.notifyDataSetChanged()
     }
 }

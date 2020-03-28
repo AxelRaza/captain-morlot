@@ -1,16 +1,14 @@
 package com.example.marinegame.home
 
-import android.content.Context
-import com.example.marinegame.model.Player
-
 interface HomeContract {
 
     interface MvpView {
-
+        fun updatePlayersList()
     }
 
     interface Presenter {
-
+        fun addPlayer(name : String, role : String)
+        fun removePlayerAt(position : Int)
     }
 
 }

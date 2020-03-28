@@ -1,12 +1,7 @@
 package com.example.marinegame.play
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,11 +16,10 @@ import kotlin.random.Random
 import android.os.Handler
 import android.support.design.widget.BottomSheetDialog
 import android.text.Html
-import android.util.Log
-import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
+import com.example.marinegame.model.Game
 
 
 class GameActivity : AppCompatActivity(), GameContract.MvpView {
@@ -33,28 +27,29 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
     lateinit var view : RelativeLayout
     lateinit var randomWord : TextView
     lateinit var playerFirstTurn : TextView
-    lateinit var currentPlayer : Player
     lateinit var presenter : GameContract.Presenter
     lateinit var roleDialog : Dialog
-    lateinit var playersList : ArrayList<Player>
     lateinit var backgrounds : IntArray
+    lateinit var game : Game
+    lateinit var playerTurn : TextView
+    lateinit var piratePlayerText : TextView
+    lateinit var piratePlayerDesc : TextView
+    lateinit var matelotPlayerText : TextView
+    lateinit var moussaillonPlayerText : TextView
+    lateinit var moussaillonDescText : TextView
+    lateinit var okButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+        game = intent.extras[Game.GAME_DATA] as Game
         randomWord = findViewById(R.id.random_word_textview)
-        presenter = GamePresenter(this, GetWordIntractorImpl())
+        presenter = GamePresenter(this, game, GetWordIntractorImpl())
         presenter.requestDataFromServer()
-        playersList = intent.extras["playersList"] as ArrayList<Player>
         backgrounds = intArrayOf(R.drawable.blue_background, R.drawable.green_background, R.drawable.orange_background, R.drawable.pink_background, R.drawable.dark_blue_background)
-
         view = findViewById(R.id.game_view)
         view.setBackgroundResource(backgrounds[Random.nextInt(0,backgrounds.size)])
-
-        currentPlayer = playersList[Random.nextInt(0, playersList.size)]
         playerFirstTurn = findViewById(R.id.player_turn_textview)
-        playerFirstTurn.text = "Après " + currentPlayer.name + ", dites un mot en relation avec celui du joueur précédent etc..."
-
         showRoleDialog()
     }
 
@@ -93,7 +88,7 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
     fun onClickScreen(view: View) {
         val gameIntent = Intent(this, EndGameActivity::class.java)
-        gameIntent.putExtra("playersList", playersList)
+        gameIntent.putExtra(Game.GAME_DATA, game)
         startActivity(gameIntent)
         overridePendingTransition(R.anim.exit_2,R.anim.entry_2)
         finish()
@@ -103,51 +98,17 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         roleDialog = BottomSheetDialog(this, R.style.SheetDialog)
         roleDialog.setContentView(R.layout.roles_popup)
 
-        val playerTurn = roleDialog.findViewById<TextView>(R.id.popup_textview)
-        val piratePlayerText = roleDialog.findViewById<TextView>(R.id.player_pirate_name_textview)
-        val piratePlayerDesc = roleDialog.findViewById<TextView>(R.id.pirate_textview)
-        val matelotPlayerText = roleDialog.findViewById<TextView>(R.id.player_matelot_name_textview)
-        val moussaillonPlayerText = roleDialog.findViewById<TextView>(R.id.player_mous_name_textview)
-        val moussaillonDescText = roleDialog.findViewById<TextView>(R.id.moussaillon_textview)
-        val okButton = roleDialog.findViewById<Button>(R.id.ok_button)
+        playerTurn = roleDialog.findViewById<TextView>(R.id.popup_textview)
+        piratePlayerText = roleDialog.findViewById<TextView>(R.id.player_pirate_name_textview)
+        piratePlayerDesc = roleDialog.findViewById<TextView>(R.id.pirate_textview)
+        matelotPlayerText = roleDialog.findViewById<TextView>(R.id.player_matelot_name_textview)
+        moussaillonPlayerText = roleDialog.findViewById<TextView>(R.id.player_mous_name_textview)
+        moussaillonDescText = roleDialog.findViewById<TextView>(R.id.moussaillon_textview)
+        okButton = roleDialog.findViewById<Button>(R.id.ok_button)
 
-        var pirateIndex = 0
-        var moussaillonIndex = 1
-
-        for(player in playersList) {
-            if(player.role.name == "Moussaillon")
-                player.role.name = ""
-            if(player.role.name == "Pirate")
-                player.role.name = ""
-        }
-
-        playersList.shuffle()
-
-        if(playersList.size > 2) {
-            playersList[moussaillonIndex].role.name = "Moussaillon"
-            playersList[pirateIndex].role.name = "Pirate"
-        }
-
-
-        for(player in playersList) {
-            if(player.role.name.equals("Matelot") || player.role.name.equals(""))
-                player.role.name = "Matelot"
-            else if(player.role.name == "Pirate")
-                piratePlayerText.text = player.name
-            else if(player.role.name == "Moussaillon")
-                moussaillonPlayerText.text = player.name
-        }
-
-        if(!isMoussaillon() && !isPirate()) {
-            moussaillonPlayerText.visibility = View.GONE
-            moussaillonDescText.visibility = View.GONE
-            piratePlayerText.visibility = View.GONE
-            piratePlayerDesc.visibility = View.GONE
-            matelotPlayerText.setTextColor(resources.getColor(R.color.black))
-            matelotPlayerText.text = Html.fromHtml("Duel entre <font color=#96e6a1>" + playersList[0].name + "</font> et <font color=#96e6a1>" + playersList[1].name + "</font> ! Vous êtes matelots et vous ne pouvez que décrire un mot")
-        }
-
-        playerTurn.text = currentPlayer.name + " commence en premier"
+        presenter.rolesInit()
+        presenter.rolesAssign()
+        presenter.getRandomPlayer()
 
         okButton.setOnClickListener {
             roleDialog.dismiss()
@@ -167,20 +128,26 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         randomWord.text = word
     }
 
-    fun isPirate(): Boolean {
-        for(player in playersList) {
-            if(player.role.name.equals("Pirate"))
-                return true
-
+    override fun updateRoles() {
+        for(player in game.playersList()) {
+            if(player.role == Game.PIRATE)
+                piratePlayerText.text = player.name
+            else if(player.role == Game.MOUSSAILLON)
+                moussaillonPlayerText.text = player.name
         }
-        return false
     }
 
-    fun isMoussaillon() : Boolean {
-        for(player in playersList) {
-            if(player.role.name.equals("Moussaillon"))
-                return true
-        }
-        return false
+    override fun updateRolesPopup(player1: Player, player2: Player) {
+        moussaillonPlayerText.visibility = View.GONE
+        moussaillonDescText.visibility = View.GONE
+        piratePlayerText.visibility = View.GONE
+        piratePlayerDesc.visibility = View.GONE
+        matelotPlayerText.setTextColor(resources.getColor(R.color.black))
+        matelotPlayerText.text = Html.fromHtml("Duel entre <font color=#96e6a1>" + player1.name + "</font> et <font color=#96e6a1>" + player2.name + "</font> ! Vous êtes matelots et vous ne pouvez que décrire un mot")
+    }
+
+    override fun updateFirstPlayer(player: Player) {
+        playerFirstTurn.text = "Après " + player.name + ", dites un mot en relation avec celui du joueur précédent etc..."
+        playerTurn.text = player.name + " commence en premier"
     }
 }
