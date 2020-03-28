@@ -1,15 +1,19 @@
 package com.example.marinegame.home
 
-import android.R.id.edit
-import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
-import com.example.marinegame.model.Player
-import android.R.id.edit
+import com.example.marinegame.model.Game
 
 
+class HomePresenter(val mView : HomeContract.MvpView, val game : Game) : HomeContract.Presenter {
 
+    override fun addPlayer(name: String, role: String) {
+        game.addPlayer(game.createPlayer(name, role))
+        mView.updatePlayersList()
+    }
 
-class HomePresenter(mView : HomeContract.MvpView) : HomeContract.Presenter {
+    override fun removePlayerAt(position: Int) {
+        game.removePlayerAt(position)
+        mView.updatePlayersList()
+    }
+
 
 }
