@@ -1,4 +1,4 @@
-package com.example.marinegame.play
+package com.example.marinegame.loading
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity

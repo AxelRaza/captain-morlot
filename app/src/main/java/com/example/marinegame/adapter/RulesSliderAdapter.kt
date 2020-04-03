@@ -18,7 +18,7 @@ class RulesSliderAdapter(val context : Context) : PagerAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
 
-    var images = intArrayOf(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background)
+    var images = intArrayOf(0, 0, R.drawable.matelot, R.drawable.logo, R.drawable.moussaillon, 0)
 
     var titres =
         arrayOf("Présentation", "Règles du jeu", "Le Matelot", "Le Pirate", "Le Moussaillon", "Prêt pour jouer")
