@@ -43,10 +43,12 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
         game = intent.extras[Game.GAME_DATA] as Game
+        game.setNbPirates(intent.extras[Game.NB_PIRATES] as Int)
+        game.setNbMoussaillons(intent.extras[Game.NB_MOUSSAILLONS] as Int)
         randomWord = findViewById(R.id.random_word_textview)
         presenter = GamePresenter(this, game, GetWordIntractorImpl())
         presenter.requestDataFromServer()
-        backgrounds = intArrayOf(R.drawable.blue_background, R.drawable.green_background, R.drawable.orange_background, R.drawable.pink_background, R.drawable.dark_blue_background)
+        backgrounds = intArrayOf(R.drawable.blue_background, R.drawable.green_background, R.drawable.orange_background, R.drawable.pink_background, R.drawable.dark_blue_background, R.drawable.green_yellow_background, R.drawable.yellow_background)
         view = findViewById(R.id.game_view)
         view.setBackgroundResource(backgrounds[Random.nextInt(0,backgrounds.size)])
         playerFirstTurn = findViewById(R.id.player_turn_textview)
@@ -59,6 +61,7 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
     fun openHelp(view : View) {
         startActivity(Intent(this,RulesActivity::class.java))
+        overridePendingTransition(R.anim.exit, R.anim.entry)
     }
 
     fun reloadWord(mView : View) {
@@ -89,6 +92,8 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
     fun onClickScreen(view: View) {
         val gameIntent = Intent(this, EndGameActivity::class.java)
         gameIntent.putExtra(Game.GAME_DATA, game)
+        gameIntent.putExtra(Game.NB_PIRATES, game.getNbPirates())
+        gameIntent.putExtra(Game.NB_MOUSSAILLONS, game.getNbMoussaillons())
         startActivity(gameIntent)
         overridePendingTransition(R.anim.exit_2,R.anim.entry_2)
         finish()
@@ -131,23 +136,33 @@ class GameActivity : AppCompatActivity(), GameContract.MvpView {
     override fun updateRoles() {
         for(player in game.playersList()) {
             if(player.role == Game.PIRATE)
-                piratePlayerText.text = player.name
+                piratePlayerText.text = player.name + ", " + piratePlayerText.text.toString()
             else if(player.role == Game.MOUSSAILLON)
-                moussaillonPlayerText.text = player.name
+                moussaillonPlayerText.text = player.name + ", " + moussaillonPlayerText.text.toString()
         }
     }
 
     override fun updateRolesPopup(player1: Player, player2: Player) {
-        moussaillonPlayerText.visibility = View.GONE
-        moussaillonDescText.visibility = View.GONE
-        piratePlayerText.visibility = View.GONE
-        piratePlayerDesc.visibility = View.GONE
-        matelotPlayerText.setTextColor(resources.getColor(R.color.black))
-        matelotPlayerText.text = Html.fromHtml("Duel entre <font color=#96e6a1>" + player1.name + "</font> et <font color=#96e6a1>" + player2.name + "</font> ! Vous êtes matelots et vous ne pouvez que décrire un mot")
+        if(!game.moussaillonExist()) {
+            moussaillonPlayerText.visibility = View.GONE
+            moussaillonDescText.visibility = View.GONE
+        }
+        if(!game.pirateExist()) {
+            piratePlayerText.visibility = View.GONE
+            piratePlayerDesc.visibility = View.GONE
+        }
+        if(!game.moussaillonExist() && !game.pirateExist() && game.getNbPlayers() < 3) {
+            matelotPlayerText.setTextColor(resources.getColor(R.color.black))
+            matelotPlayerText.text = Html.fromHtml("Duel entre <font color=#96e6a1>" + player1.name + "</font> et <font color=#96e6a1>" + player2.name + "</font> ! Vous êtes matelots et vous ne pouvez que décrire un mot")
+        }
     }
 
     override fun updateFirstPlayer(player: Player) {
         playerFirstTurn.text = "Après " + player.name + ", dites un mot en relation avec celui du joueur précédent etc..."
-        playerTurn.text = player.name + " commence en premier"
+        when(player.role) {
+            Game.PIRATE -> playerTurn.text = Html.fromHtml("<font color=#f09819>" + player.name + "</font> commence en premier")
+            Game.MOUSSAILLON -> playerTurn.text = Html.fromHtml("<font color=#4facfe>" + player.name + "</font> commence en premier")
+            Game.MATELOT -> playerTurn.text = Html.fromHtml("<font color=#96e6a1>" + player.name + "</font> commence en premier")
+        }
     }
 }

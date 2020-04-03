@@ -114,6 +114,8 @@ class EndGameActivity : AppCompatActivity(), EndGameContract.MvpView {
     override fun updateGameView() {
         val gameIntent = Intent(this, GameActivity::class.java)
         gameIntent.putExtra(Game.GAME_DATA, game)
+        gameIntent.putExtra(Game.NB_PIRATES, intent.extras[Game.NB_PIRATES] as Int)
+        gameIntent.putExtra(Game.NB_MOUSSAILLONS, intent.extras[Game.NB_MOUSSAILLONS] as Int)
         startActivity(gameIntent)
         overridePendingTransition(R.anim.exit,R.anim.entry)
         finish()

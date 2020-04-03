@@ -16,8 +16,12 @@ class Game private constructor() : Serializable {
         const val NB_MIN_PLAYERS = 2
         const val MATELOT = "Matelot"
         const val PIRATE = "Pirate"
+        const val PIRATES = "Pirates"
         const val MOUSSAILLON = "Moussaillon"
+        const val MOUSSAILLONS = "Moussaillons"
         const val GAME_DATA = "Game"
+        const val NB_PIRATES = "NbPirates"
+        const val NB_MOUSSAILLONS = "NbMoussaillons"
     }
 
     private var playersList : ArrayList<Player>
@@ -40,6 +44,10 @@ class Game private constructor() : Serializable {
 
     fun addPlayer(player : Player) {
         playersList.add(player)
+    }
+
+    fun getNbPlayers() : Int {
+        return playersList.size
     }
 
     fun removePlayerAt(position : Int) {
@@ -71,6 +79,8 @@ class Game private constructor() : Serializable {
         playersList.shuffle()
 
         if(playersList.size > NB_MIN_PLAYERS) {
+            if(playersList.size - nbPirates - nbMoussaillons < (nbPirates + nbMoussaillons) && playersList.size > NB_MIN_PLAYERS+1)
+                if(nbPirates < nbMoussaillons) nbMoussaillons-- else nbPirates--
             for(i in 0 until nbPirates)
                 playersList[i].role = PIRATE
             for(i in nbPirates until nbPirates + nbMoussaillons)
@@ -81,6 +91,32 @@ class Game private constructor() : Serializable {
             if(player.role.equals(MATELOT) || player.role.equals(""))
                 player.role = MATELOT
         }
+    }
+
+    fun setNbPirates(pirates : Int) {
+        nbPirates = pirates
+    }
+
+    fun setNbMoussaillons(moussaillons : Int) {
+        nbMoussaillons = moussaillons
+    }
+
+    fun getNbPirates() : Int {
+        var pirates = 0
+        for(player in playersList) {
+            if(player.role.equals(PIRATE))
+                pirates++
+        }
+        return pirates
+    }
+
+    fun getNbMoussaillons() : Int {
+        var moussaillons = 0
+        for(player in playersList) {
+            if(player.role.equals(MOUSSAILLON))
+                moussaillons++
+        }
+        return moussaillons
     }
 
     fun moussaillonExist() : Boolean {

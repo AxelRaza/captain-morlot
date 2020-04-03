@@ -10,10 +10,10 @@ import android.widget.*
 import com.example.marinegame.R
 import com.example.marinegame.RulesActivity
 import com.example.marinegame.adapter.PlayersAdapter
-import com.example.marinegame.play.GameActivity
 import android.widget.Toast
 import com.example.marinegame.model.Game
 import com.example.marinegame.model.SharedPreferenciesManager
+import com.example.marinegame.properties.GameProperties
 
 
 class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.onPlayerListener {
@@ -44,7 +44,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
         if(game.playersList().size < Game.NB_MIN_PLAYERS)
             Toast.makeText(this,Game.NB_MIN_PLAYERS.toString() + " joueurs minimum", Toast.LENGTH_LONG).show()
         else {
-            val intent = Intent(this, GameActivity::class.java)
+            val intent = Intent(this, GameProperties::class.java)
             intent.putExtra(Game.GAME_DATA, game)
             startActivity(intent)
             overridePendingTransition(R.anim.exit_2, R.anim.entry_2)
@@ -61,7 +61,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
         if(game.exist(playerField.text.toString()))
             Toast.makeText(this, "Joueur déjà existant", Toast.LENGTH_LONG).show()
 
-        if(game.playersList().size > Game.NB_MAX_PLAYERS)
+        if(game.playersList().size == Game.NB_MAX_PLAYERS)
             Toast.makeText(this,Game.NB_MAX_PLAYERS.toString() + " joueurs maximum", Toast.LENGTH_LONG).show()
 
         else if(!playerField.text.isEmpty()) {
@@ -71,15 +71,8 @@ class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.o
     }
 
     fun loadRulesFirstTime() {
-        /*val isFirstRun = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
-            .getBoolean("isFirstRun", true)*/
-
-        if (SharedPreferenciesManager.isFirstRunApp(this)) {
+        if (SharedPreferenciesManager.isFirstRunApp(this))
             startActivity(Intent(this, RulesActivity::class.java))
-        }
-
-        /*getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE).edit()
-            .putBoolean("isFirstRun", false).commit()*/
         SharedPreferenciesManager.setFirstRunAppToFalse(this)
     }
 
