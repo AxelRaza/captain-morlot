@@ -18,8 +18,7 @@ class GamePresenter(val mView : GameContract.MvpView, val game : Game, val getWo
     override fun rolesAssign() {
         game.rolesAssign()
         mView.updateRoles()
-        if(!game.moussaillonExist() && !game.pirateExist())
-            mView.updateRolesPopup(game.playersList()[0], game.playersList()[1])
+        mView.updateRolesPopup(game.playersList()[0], game.playersList()[1])
     }
 
     override fun onRefreshClick() {
