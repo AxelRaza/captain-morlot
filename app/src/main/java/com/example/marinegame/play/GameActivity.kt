@@ -24,20 +24,20 @@ import com.example.marinegame.model.Game
 
 class GameActivity : AppCompatActivity(), GameContract.MvpView {
 
-    lateinit var view : RelativeLayout
-    lateinit var randomWord : TextView
-    lateinit var playerFirstTurn : TextView
-    lateinit var presenter : GameContract.Presenter
-    lateinit var roleDialog : Dialog
-    lateinit var backgrounds : IntArray
-    lateinit var game : Game
-    lateinit var playerTurn : TextView
-    lateinit var piratePlayerText : TextView
-    lateinit var piratePlayerDesc : TextView
-    lateinit var matelotPlayerText : TextView
-    lateinit var moussaillonPlayerText : TextView
-    lateinit var moussaillonDescText : TextView
-    lateinit var okButton : Button
+    lateinit private var view : RelativeLayout
+    lateinit private var randomWord : TextView
+    lateinit private var playerFirstTurn : TextView
+    lateinit private var presenter : GameContract.Presenter
+    lateinit private var roleDialog : Dialog
+    lateinit private var backgrounds : IntArray
+    lateinit private var game : Game
+    lateinit private var playerTurn : TextView
+    lateinit private var piratePlayerText : TextView
+    lateinit private var piratePlayerDesc : TextView
+    lateinit private var matelotPlayerText : TextView
+    lateinit private var moussaillonPlayerText : TextView
+    lateinit private var moussaillonDescText : TextView
+    lateinit private var okButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,12 +18,12 @@ class RulesSliderAdapter(val context : Context) : PagerAdapter() {
 
     private var layoutInflater: LayoutInflater? = null
 
-    var images = intArrayOf(0, 0, R.drawable.matelot, R.drawable.logo, R.drawable.moussaillon, 0)
+    private var images = intArrayOf(0, 0, R.drawable.matelot, R.drawable.logo, R.drawable.moussaillon, 0)
 
-    var titres =
+    private var titres =
         arrayOf("Présentation", "Règles du jeu", "Le Matelot", "Le Pirate", "Le Moussaillon", "Prêt pour jouer")
 
-    var descriptions = arrayOf(
+    private var descriptions = arrayOf(
         "Bienvenue dans Captain Morlot, un bon jeu pour tuer le temps avec vos amis si vous en avez. De toute manière ici il n'y a pas d'amitiés qui tiennent, le but étant d'être le dernier survivant.",
         "Un mot va être donné au départ. La première personne devra dire un mot en relation avec le mot donné (suite, contraire, homophones, description, selon le rôle).\n\n La personne suivante devra donner un mot en relation avec celui de la personne précédente et ainsi de suite",
         "Tous les Matelots doivent dire un mot qui décrit le mot donné. \n\nPar exemple, si le mot est guitare, alors il peut dire : corde, instrument, acoustique ou encore manche",

@@ -17,12 +17,12 @@ import android.widget.TextView
 
 class RulesActivity : AppCompatActivity(), RulesContract.MvpView {
 
-    lateinit var mPresenter : RulesContract.Presenter
-    lateinit var pointsLayout : LinearLayout
-    lateinit var points : Array<TextView?>
-    lateinit var btnPrec : Button
-    lateinit var btnSuiv : Button
-    var currentPage : Int = 0
+    lateinit private var mPresenter : RulesContract.Presenter
+    lateinit private var pointsLayout : LinearLayout
+    lateinit private var points : Array<TextView?>
+    lateinit private var btnPrec : Button
+    lateinit private var btnSuiv : Button
+    private var currentPage : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

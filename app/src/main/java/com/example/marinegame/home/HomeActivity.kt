@@ -18,10 +18,10 @@ import com.example.marinegame.properties.GameProperties
 
 class HomeActivity : AppCompatActivity(), HomeContract.MvpView, PlayersAdapter.onPlayerListener {
 
-    lateinit var mPresenter : HomePresenter
-    lateinit var playersRecyclerView : RecyclerView
-    lateinit var playerField : EditText
-    val game : Game = Game.instance
+    lateinit private var mPresenter : HomePresenter
+    lateinit private var playersRecyclerView : RecyclerView
+    lateinit private var playerField : EditText
+    private val game : Game = Game.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

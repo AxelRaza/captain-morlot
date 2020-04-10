@@ -24,11 +24,11 @@ import kotlin.random.Random
 
 class EndGameActivity : AppCompatActivity(), EndGameContract.MvpView {
 
-    lateinit var playerCases : ArrayList<View>
-    lateinit var grid : GridLayout
-    lateinit var endDialog : BottomSheetDialog
-    lateinit var game : Game
-    lateinit var presenter: EndGamePresenter
+    lateinit private var playerCases : ArrayList<View>
+    lateinit private var grid : GridLayout
+    lateinit private var endDialog : BottomSheetDialog
+    lateinit private var game : Game
+    lateinit private var presenter: EndGamePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
