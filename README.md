@@ -42,29 +42,48 @@ Il possède les facultés du matelot et du pirate. De plus, lorsqu'il dira son m
 
 Lorsque vous lancez le jeu, vous verrez le logo dans un premier temps.  
 
-
+<img src="../images/loading.png" width="150" height="275">
 
 Si c'est la première fois que vous lancez le jeu, vous aurez les règles du jeu affichées.  
 
+<img src="../images/rules.png" width="150" height="275">
 
 Sur l'écran d'accueil, vous pouvez entrer de nouveaux joueurs en indiquant leur nom. Vous pouvez cliquer sur le nom du joueur pour le retirer de la liste.  
 
+<img src="../images/main.png" width="150" height="275">
 
 Une fois les joueurs choisis, vous pouvez choisir le nombre de moussaillons ou de pirates que vous voulez avoir.  
 
+<img src="../images/choose-roles.gif" width="150" height="275">
 
 Au début de chaque manche, vous verrez une popup apparaître indiquant le rôle de chacun et le joueur commençant en premier.  
 
+<img src="../images/roles-popup.png" width="150" height="275">
 
 Le jeu donne un mot, il est possible de changer de mot si ce dernier ne convient pas.  
 
+<img src="../images/game.png" width="150" height="275"><img src="../images/game2.png" width="150" height="275">
 
 Vous avez la liste des joueurs. Lorsqu'un joueur est mort, cliquez sur ce dernier pour l'enlever de la liste. Une popup de confirmation s'affiche.  
 
+<img src="../images/end-game.png" width="150" height="275">
 
 Lorsqu'il reste 2 joueurs, ces derniers deviennent des matelots.  
 
+<img src="../images/last-roles-popup.png" width="150" height="275">
 
-Lorsqu'une personne gagne, on a une popup qui s'affiche.  
+Lorsqu'une personne gagne, une popup s'affiche.  
 
+<img src="../images/end-game--last-popup.png" width="150" height="275">
 
+----------
+
+## Spécifications techniques
+
+### API REST
+
+Pour charger les mots, une api rest a été créée et utilisée : [WordGeneration](https://bridge.buddyweb.fr/docs/wordgeneration#table-1984)
+
+### Architecture
+
+L'application adopte l'architecture MVP. L'application est séparée par fonctionnalité. Chaque fonctionnalité possède son presenter ainsi que sa vue.
