@@ -66,7 +66,7 @@ Le jeu donne un mot, il est possible de changer de mot si ce dernier ne convient
 
 Vous avez la liste des joueurs. Lorsqu'un joueur est mort, cliquez sur ce dernier pour l'enlever de la liste. Une popup de confirmation s'affiche.  
 
-<img src="../images/end-game.png" width="150" height="275">
+<img src="../images/end-game.png" width="150" height="275"><img src="../images/end-game-popup.png" width="150" height="275">
 
 Lorsqu'il reste 2 joueurs, ces derniers deviennent des matelots.  
 
